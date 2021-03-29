@@ -8,7 +8,16 @@ const alpaca = new Alpaca({
 
 const init = async () => {
 
-console.log(alpaca);
+alpaca.getAccount()
+    .then((account) => {
+        if (account.trading_blocked) {
+            console.log('Account is currently restricted from trading.')
+        }
+
+        console.log(`Current buying power: $${account.buying_power}`)
+        console.log(`Current portfolio value: $${account.portfolio_value}`)
+        console.log(`Today's portfolio balance change: $${account.equity - account.last_equity}`)
+    })
 
 }
 
