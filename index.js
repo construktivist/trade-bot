@@ -21,4 +21,21 @@ alpaca.getAccount()
 
 }
 
+alpaca.getAsset('PLTR')
+    .then((asset) => {
+        if (asset.tradable) {
+            console.log(`PLTR is tradable`)
+        }
+    })
+
+    const activeAssets = alpaca.getAssets({
+        status: 'active'
+    }).then((activeAssets) => {
+        // Filter the assets down to just those on NASDAQ.
+        const nasdaqAssets = activeAssets.filter(asset => asset.exchange == 'NASDAQ')
+        nasdaqAssets.forEach( asset => {
+            console.log(asset.symbol)
+        });
+    })
+
 init();
