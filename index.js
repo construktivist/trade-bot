@@ -8,6 +8,7 @@ const alpaca = new Alpaca({
 
 const init = async () => {
 
+// GET ACCOUNT
 alpaca.getAccount()
     .then((account) => {
         if (account.trading_blocked) {
@@ -21,6 +22,7 @@ alpaca.getAccount()
 
 }
 
+//GET ASSET
 alpaca.getAsset('PLTR')
     .then((asset) => {
         if (asset.tradable) {
@@ -28,14 +30,39 @@ alpaca.getAsset('PLTR')
         }
     })
 
-    const activeAssets = alpaca.getAssets({
-        status: 'active'
-    }).then((activeAssets) => {
-        // Filter the assets down to just those on NASDAQ.
-        const nasdaqAssets = activeAssets.filter(asset => asset.exchange == 'NASDAQ')
-        nasdaqAssets.forEach( asset => {
-            console.log(asset.symbol)
-        });
+// GET ASSETS 
+// alpaca.getAssets({
+//     status: 'active'
+// }).then((activeAssets) => {
+//     // Filter the assets down to just those on NASDAQ.
+//     const nasdaqAssets = activeAssets.filter(asset => asset.exchange == 'NASDAQ')
+//     nasdaqAssets.forEach( asset => {
+//         console.log(asset.symbol)
+//     });
+// })
+
+// GET CLOCK
+alpaca.getClock()
+    .then(clock => {
+        clock.is_open ? console.log(`Market is open. It will close at ${clock.next_close}`) : console.log(`Market is closed. It will open at ${clock.next_open}`);
     })
+
+// GET CALENDAR 
+// alpaca.getCalendar({
+//     start: '2021-03-28',
+//     end: '2021-04-04'
+// }).then( calendar => {
+//         console.log(calendar)
+//     })
+
+//GET BARS
+alpaca.getBars('day', 'PLTR', {
+    limit: 5
+}).then(barset => {
+    const pltr_barset = barset['PLTR']
+    console.log(pltr_barset[0].openPrice)
+    console.log(pltr_barset.slice(-1)[0].closePrice)
+    console.log((pltr_barset.slice(-1)[0].closePrice - pltr_barset[0].openPrice) /  pltr_barset[0].openPrice * 100)
+})
 
 init();
