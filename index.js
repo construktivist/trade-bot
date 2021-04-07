@@ -67,29 +67,30 @@ const init = async () => {
 // Get daily price data for AAPL over the last 5 trading days.
 const barset = alpaca.getBars(
     'day',
-    'AAPL',
+    'PLTR',
     {
         limit: 5
     }
 ).then((barset) => {
-    const aapl_bars = barset['AAPL']
+    const pltr_bars = barset['PLTR']
 
     // See how much AAPL moved in that timeframe.
-    const week_open = aapl_bars[0].openPrice
-    const week_close = aapl_bars.slice(-1)[0].closePrice
+    const week_open = pltr_bars[0].openPrice
+    const week_close = pltr_bars.slice(-1)[0].closePrice
     const percent_change = (week_close - week_open) / week_open * 100
 
-    console.log(`AAPL moved ${percent_change}% over the last 5 days`)
+    console.log(`PLTR moved ${percent_change}% over the last 5 days`)
 })
 
 // // Submit a market order to buy 1 share of Apple at market price
-// alpaca.createOrder({
-//     symbol: 'AAPL',
-//     qty: 1,
-//     side: 'buy',
-//     type: 'market',
-//     time_in_force: 'day'
-// })
+alpaca.createOrder({
+    symbol: 'PLTR',
+    qty: 1,
+    side: 'buy',
+    type: 'market',
+    time_in_force: 'day',
+    client_order_id: 'my_first_order'
+})
 
 // // Submit a limit order to attempt to sell 1 share of AMD at a
 // // particular price ($20.50) when the market opens
@@ -103,5 +104,20 @@ const barset = alpaca.getBars(
 // })
 
 }
+// Submit a market order and assign it a Client Order ID.
+alpaca.createOrder({
+    symbol: 'PLTR',
+    qty: 1,
+    side: 'buy',
+    type: 'market',
+    time_in_force: 'day',
+    client_order_id: 'my_first_order'
+})
+
+// Get our order using its Client Order ID.
+alpaca.getOrderByClientOrderId('my_first_order')
+    .then((myOrder) => {
+        console.log(`Got order #${myOrder.id}.`)
+    })
 
 init();
