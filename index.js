@@ -121,6 +121,8 @@ const init = async () => {
 //     console.log(orders);
 // }) 
 
-
+alpaca.websocket.onConnect(function () {
+    console.log('Connected')
+})
 
 // init();
