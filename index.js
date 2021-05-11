@@ -8,6 +8,8 @@ const alpaca = new Alpaca({
 
 const init = async () => {
 
+    console.log("test");
+
 // GET ACCOUNT
 // alpaca.getAccount()
 //     .then((account) => {
@@ -103,7 +105,6 @@ const init = async () => {
 //     limit_price: 20.50
 // })
 
-}
 // Submit a market order
 // alpaca.createOrder({
 //     symbol: 'PLTR',
@@ -120,9 +121,10 @@ const init = async () => {
 // }).then(orders => {
 //     console.log(orders);
 // }) 
+}
 
 alpaca.websocket.onConnect(function () {
     console.log('Connected')
 })
 
-// init();
+init();
